@@ -1,0 +1,124 @@
+﻿<Window x:Class="RequestDelivery.ChangeRequest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RequestDelivery"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="CreateOrCahngeRequest" Height="450" Width="800">
+    <Window.Resources>
+        <local:EnumConverter x:Key="enumConverter"/>
+        <Style TargetType="{x:Type TextBox}" x:Key="ToolTipError">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:DeliveryRequest+Status"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Name="GridDataEdit" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.BindingGroup>
+                <BindingGroup Name="bindingGroup"/>
+            </Grid.BindingGroup>
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Номер заявки:</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Адрес, где забрать:</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Адрес, куда будем доставлять:</TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Вес:</TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Длина, см:</TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Ширина, см:</TextBlock>
+            <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Высота, см:</TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Request.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                     VerticalAlignment="Center" IsReadOnly="True" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="receivingAddress_Textbox" Text="{Binding Request.ReceivingAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Name="shippingAddress_Textbox" Text="{Binding Request.ShippingAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="3" Grid.Column="1" Name="weight_Textbox" Text="{Binding Request.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="4" Grid.Column="1" Name="length_Textbox"  Text="{Binding Request.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="5" Grid.Column="1" Name="width_Textbox"  Text="{Binding Request.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="6" Grid.Column="1" Name="height_Textbox"  Text="{Binding Request.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap">Объем (расчитывается автоматически):</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap">Дата, когда клиент готов отдать груз:</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Контактные данные:</TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Город отправки:</TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Город доставки:</TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">Статус заявки:</TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="3" IsReadOnly="True" Text="{Binding Request.Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"   
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <DatePicker Grid.Row="1" Grid.Column="3" Name="date_DatePicker" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5" 
+                        SelectedDate="{Binding Request.Date , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            <TextBox Grid.Row="2" Grid.Column="3" Name="contactDetails_Textbox" Text="{Binding Request.ContactDetails, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"   
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="3" Grid.Column="3" Name="shipmentCity_Textbox" Text="{Binding Request.ShipmentCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"   
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <TextBox Grid.Row="4" Grid.Column="3" Name="CityOfDelivery_Textbox" Text="{Binding Request.CityOfDelivery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"></TextBox>
+            <ComboBox Grid.Row="5" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                      ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding Path=Request.DeliveryStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource enumConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Name="SaveChangedRequest_Button" Command="{Binding SaveCommand}" Content="Сохранить" Margin="5">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=receivingAddress_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=shippingAddress_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=weight_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=length_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=width_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=height_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=date_DatePicker}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=contactDetails_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=shipmentCity_Textbox}" Value="False"/>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=CityOfDelivery_Textbox}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Name="CancelChangedRequest_Button" Command="{Binding CacncelCommand}" Content="Отменить" Margin="5"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
